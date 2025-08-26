@@ -33,3 +33,7 @@ export class InMemoryGrid implements Grid {
   put(cell: Cell<unknown>): void { this.map.set(cell.id, cell); }
   has(id: string): boolean { return this.map.has(id); }
 }
+
+export class StringCell extends Cell<string> {
+  write(v: string) { this.ready(v); }
+}
