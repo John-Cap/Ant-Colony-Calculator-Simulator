@@ -2,12 +2,16 @@ import { xor, and, or, type Bit, type GP } from '../core/bit.js';
 import { BitCell, PairCell, type Grid } from './cells.js';
 import type { MemoryTable } from '../resources/memory.js';
 import type { GrainPool } from '../resources/grains.js';
+import { JobQueue } from '../domain/jobs.js';
+import { VirtualAntWorker } from '../sim/virtual_worker.js';
 
 export interface ExecContext {
   grid: Grid;
   c0: Bit;
-  memory?: MemoryTable;  // resources, optional until wired
-  grains?: GrainPool;    // resources, optional until wired
+  memory?: MemoryTable;
+  grains?: GrainPool;
+  jobs?: JobQueue;
+  worker?: VirtualAntWorker;
 }
 
 export interface Action { id: string; execute(ctx: ExecContext): void; }
