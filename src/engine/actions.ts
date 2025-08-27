@@ -4,6 +4,10 @@ import type { MemoryTable } from '../resources/memory.js';
 import type { GrainPool } from '../resources/grains.js';
 import { JobQueue } from '../domain/jobs.js';
 import { VirtualAntWorker } from '../sim/virtual_worker.js';
+import { MemoryBoard } from '../resources/memory_board.js';
+import { JobQueuePos } from '../domain/jobs_positional_queue.js';
+import { RealtimeAntWorkerPool } from '../sim/realtime_worker.js';
+import { MemoryRuntime } from '../sim/memory_runtime.js';
 
 export interface ExecContext {
   grid: Grid;
@@ -12,6 +16,7 @@ export interface ExecContext {
   grains?: GrainPool;
   jobs?: JobQueue;
   worker?: VirtualAntWorker;
+  board?: MemoryBoard;
 }
 
 export interface Action { id: string; execute(ctx: ExecContext): void; }
@@ -73,4 +78,23 @@ export class SumFromPC implements Action {
     const C = ctx.grid.get<BitCell>(this.c).value;
     ctx.grid.get<BitCell>(this.out).write(xor(P, C));
   }
+}
+
+export interface ExecContext {
+  grid: Grid;
+  c0: Bit;
+
+  // virtual (bulk) resources
+  memory?: MemoryTable;
+  grains?: GrainPool;
+  jobs?: JobQueue;
+  worker?: VirtualAntWorker;
+
+  // realtime (positional) resources — optional until you use them
+  board?: MemoryBoard;
+  jobsPos?: JobQueuePos;
+  workerRT?: RealtimeAntWorkerPool;
+  rt?: MemoryRuntime;              // shared runtime (already used by virtual worker)
+  repoPos?: { x: number; y: number };
+  memTickMs?: number;              // tick quantum for Await*Realtime actions
 }

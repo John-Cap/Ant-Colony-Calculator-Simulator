@@ -11,6 +11,7 @@ import { GrainPool } from "./resources/grains.js";
 import { InMemoryJobQueue } from "./domain/jobs.js";
 import { MemoryRuntime } from "./sim/memory_runtime.js";
 import { VirtualAntWorker } from "./sim/virtual_worker.js";
+import { installDefault4BitTemplates, MemoryBoard } from "./resources/memory_board.js";
 
 function bits4(n: number): [Bit, Bit, Bit, Bit] {
   return toNibble(n) as [Bit, Bit, Bit, Bit];
@@ -59,9 +60,13 @@ async function runDemo(aDec: number, bDec: number, c0: Bit = 0) {
   const jobs = new InMemoryJobQueue();
   const runtime = new MemoryRuntime(memory, grains);
   const worker = new VirtualAntWorker(jobs, runtime, memory);
+  const board = new MemoryBoard();
+  installDefault4BitTemplates(board);
 
   // Execute
-  await new VirtualExecutor().run(plan, { grid, c0, memory, grains, jobs, worker });
+  await new VirtualExecutor().run(plan, {
+    grid, c0, memory, grains, jobs, worker, board   // <-- include board
+  });
 
   // Read result
   const s0 = grid.get<BitCell>("S0").value;

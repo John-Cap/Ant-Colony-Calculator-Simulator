@@ -14,6 +14,7 @@ import { MemoryRuntime } from "../sim/memory_runtime.js";
 import { VirtualAntWorker } from "../sim/virtual_worker.js";
 
 import type { Bit } from "../core/bit.js";
+import { installDefault4BitTemplates, MemoryBoard } from "../resources/memory_board.js";
 
 /* ---------- helpers ---------- */
 
@@ -66,8 +67,12 @@ async function runOnce(a: number, b: number, c0: Bit = 0 as Bit) {
   const runtime = new MemoryRuntime(memory, grains);
   const worker = new VirtualAntWorker(jobs, runtime, memory);
 
+  // NEW: board with default coordinate templates
+  const board = new MemoryBoard();
+  installDefault4BitTemplates(board);
+
   const plan = buildPlanCLA4();
-  await new VirtualExecutor().run(plan, { grid, c0, memory, grains, jobs, worker });
+  await new VirtualExecutor().run(plan, { grid, c0, memory, grains, jobs, worker, board });
 
   const s0 = grid.get<BitCell>("S0").value;
   const s1 = grid.get<BitCell>("S1").value;
@@ -75,13 +80,7 @@ async function runOnce(a: number, b: number, c0: Bit = 0 as Bit) {
   const s3 = grid.get<BitCell>("S3").value;
   const c4 = grid.get<BitCell>("C4").value;
 
-  const sum =
-    (Number(c4) << 4) |
-    (Number(s3) << 3) |
-    (Number(s2) << 2) |
-    (Number(s1) << 1) |
-    Number(s0);
-
+  const sum = (Number(c4) << 4) | (Number(s3) << 3) | (Number(s2) << 2) | (Number(s1) << 1) | Number(s0);
   return { sum, grid, memory, grains };
 }
 
