@@ -1,4 +1,4 @@
-import { Id, Rect, Vec2 } from "./geometry";
+import { Id, Rect, Vec2 } from "./geometry.js";
 
 export interface Cell {
   id: Id;
@@ -6,7 +6,7 @@ export interface Cell {
   dock: Vec2;                    // target point for ants
   capacity: number;              // default 1
   occupancy: number;             // grains inside now
-  reservedBy?: Id;               // JobChain id if reserved
+  reservedBy?: Id | undefined;               // JobChain id if reserved
   tags: string[];                // e.g. ["Var"], ["IdxLo"], ["Value"]
 }
 

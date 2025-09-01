@@ -18,7 +18,7 @@ export interface VirtualSnapshot {
     steps: Array<{ name: string; detail?: unknown }>;
 }
 
-// ---------- helpers (strict-safe) ----------
+//Check strict!
 function at<T>(arr: ReadonlyArray<T>, i: number, msg?: string): T {
     const v = arr[i];
     if (v === undefined) throw new Error(msg ?? `Index ${i} out of range`);

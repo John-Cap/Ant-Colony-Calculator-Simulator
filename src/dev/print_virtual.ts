@@ -53,8 +53,8 @@ function main() {
   dumpPrefixes("prefixP", snap.prefixP);
   dumpPrefixes("prefixG", snap.prefixG);
 
-  // Optional: print the step log
-  // console.dir(snap.steps, { depth: null });
+  //Step log
+  console.dir(snap.steps, { depth: null });
 }
 
 main();

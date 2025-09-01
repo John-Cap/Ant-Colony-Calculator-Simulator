@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "run:virt": "npm run build && node dist/dev/print_virtual.js"
+    "printvirtualcalc": "node dist/dev/print_virtual.js",
+    "boardTest":"node --test dist/**/*.test.js"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
