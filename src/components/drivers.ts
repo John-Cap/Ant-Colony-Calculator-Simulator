@@ -19,6 +19,7 @@ export interface ComponentDriver<
   P extends PortsBase,
   O extends Record<string, 0 | 1> = Record<string, 0 | 1>
 > {
+  [x: string]: any;
   /** Must return the *same* Cell object references from the component (no cloning). */
   ports(comp: Component): P;
 
