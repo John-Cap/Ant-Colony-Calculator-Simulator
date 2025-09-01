@@ -1,0 +1,62 @@
+
+'Steps':
+
+1. Lay out A
+    Jobs:
+        a) Place grain in A0
+        b) Place grain in A1
+        c) Place grain in A2
+        d) Place grain in A3
+2. Lay out B
+    Jobs:
+        a) Place grain in B0
+        b) Place grain in B1
+        c) Place grain in B2
+        d) Place grain in B3
+
+For each condition Ai and Bi present:
+
+3. Calculate P0
+    Jobs:
+        a) Select empty memory row
+        b) Place grain in 'Reserved' cell
+        -when reserved:
+        c) Place grain in 'P' cell
+        d) Place grain in '0' index cell
+        -if A0 != 0:
+        e) Place grain in input 1 of XOR gate
+        -if B0 != 0:
+        f) Place grain in input 2 of XOR gate
+        g) 'Operate' gate
+        -if output != 0:
+        h) Place grain in 'value' column of reserved memory row.
+        -if output == 0:
+        i) Do nothing
+        -Finalize memory entry:
+        j) Place grain in 'read ready' column of memory row.
+
+...
+Same for P1-P3
+
+For each condition Pi available:
+
+4. Calculate G0
+    a) Select empty memory row
+    b) Place grain in 'Reserved' cell
+    -when reserved:
+    c) Place grain in 'G' cell
+    d) Place grain in '0' index cell
+    -if A0 != 0:
+    e) Place grain in AND input 1
+    -if B0 != 0:
+    f) Place grain in AND input 2
+    g) 'Operate' gate
+    -if output != 0:
+    h) Place grain in 'value' cell of memory row
+    -if output == 0:
+    i) Do nothing
+    -Finalize memory entry:
+    j) Place grain in 'read ready' cell of memory row
+    
+...
+Same for G1-G3

@@ -1,38 +1,36 @@
-// src/components/and_driver.test.ts
 import test from "node:test";
 import assert from "node:assert/strict";
 import { loadBoard } from "../config/loader.js";
 import { demoBoard } from "../config/demo_board.js";
-import { registerDriver, driverFor } from "./drivers.js";
-import { GateANDDriver } from "./and_driver.js";
-import { Cell } from "../world/board.js";
+import { driverFor } from "./drivers.js";
+import type { AndPorts } from "./and_driver.js";
 
-registerDriver("GateAND", GateANDDriver);
+// Ensure AND driver has been registered
+import "./and_driver.js";
+
 function fail(msg: string): never { throw new Error(msg); }
 
 test("AND gate: roles and evaluate", () => {
     const board = loadBoard(demoBoard);
-    const boardSector = board.sectors[0] ?? fail('Board sector undefined!')
-    const comp = boardSector.components[0] ?? fail('component undefined!');
-    const drv = driverFor(comp.kind);
+    const sector = board.sectors[0] ?? fail("Sector missing");
+    const comp   = sector.components[0] ?? fail("Component missing");
 
-    const ports = drv.ports(comp) as { inA?: Cell; inB?: Cell };
-    const inA = ports.inA ?? fail("inA undefined!");
-    const inB = ports.inB ?? fail("inA undefined!");
-    // a=1, b=0
-    inA.occupancy = 1; inB.occupancy = 0;
-    console.log([inA.occupancy,inB.occupancy])
-    assert.equal(drv.evaluate!(comp).out, 0);
-    // a=0, b=1
-    inA.occupancy = 0; inB.occupancy = 1;
-    console.log([inA.occupancy,inB.occupancy])
-    assert.equal(drv.evaluate!(comp).out, 0);
-    // a=0, b=0
-    inA.occupancy = 0; inB.occupancy = 0;
-    console.log([inA.occupancy,inB.occupancy])
-    assert.equal(drv.evaluate!(comp).out, 0);
-    // a=1, b=1
-    inB.occupancy = 1; inA.occupancy = 1;
-    console.log([inA.occupancy,inB.occupancy])
-    assert.equal(drv.evaluate!(comp).out, 1);
+    const drv = driverFor<AndPorts, { out: 0 | 1 }>(comp.kind);
+    const ports = drv.ports(comp);
+
+    // a=1, b=0 -> 0
+    ports.inA.occupancy = 1; ports.inB.occupancy = 0;
+    assert.equal(drv.evaluateFromPorts!(ports).out, 0);
+
+    // a=0, b=1 -> 0
+    ports.inA.occupancy = 0; ports.inB.occupancy = 1;
+    assert.equal(drv.evaluateFromPorts!(ports).out, 0);
+
+    // a=0, b=0 -> 0
+    ports.inA.occupancy = 0; ports.inB.occupancy = 0;
+    assert.equal(drv.evaluateFromPorts!(ports).out, 0);
+
+    // a=1, b=1 -> 1
+    ports.inA.occupancy = 1; ports.inB.occupancy = 1;
+    assert.equal(drv.evaluateFromPorts!(ports).out, 1);
 });

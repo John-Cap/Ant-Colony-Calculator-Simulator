@@ -1,8 +1,7 @@
 import type { BoardSpec } from "./schema.js";
 
 export const demoBoard: BoardSpec = {
-sectors:
-    [
+    sectors:    [
         {
             id: "sec:gates",
             x: 0, y: 0, w: 300, h: 200,
