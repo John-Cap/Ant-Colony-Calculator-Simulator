@@ -1,10 +1,10 @@
 // e.g., src/main_memory_demo.ts
-import { demoMemoryTableBoard } from '../config/memory_table.js';
 import { loadBoard } from '../config/loader.js';
 import { MemoryRegistry } from '../memory/registry.js';
 import { MemoryRuntime } from '../memory/runtime.js';
 import { keyOf } from '../domain/symbols.js';
 import { InMemoryJobsQueue } from '../jobs/in_memory_queue.js'; // trivial queue + virtual worker
+import { demoMemoryTableBoard } from '../components/memory_table.js';
 
 const spec = demoMemoryTableBoard(20);
 const board = loadBoard(spec);
